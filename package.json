@@ -1,0 +1,23 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe App",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DimitarK13/forkify-app.git"
+  },
+  "author": "Dimitar Kalapocev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DimitarK13/forkify-app/issues"
+  },
+  "homepage": "https://github.com/DimitarK13/forkify-app#readme",
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.9.3",
+    "parcel": "^2.9.3"
+  }
+}
