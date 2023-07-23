@@ -12,7 +12,6 @@ const recipeContainer = document.querySelector('.recipe');
 const controlRecipes = async () => {
   try {
     const id = window.location.hash.slice(1);
-    console.log(id);
 
     if (!id) return;
 
@@ -24,7 +23,7 @@ const controlRecipes = async () => {
     // Rendering Recipe
     recipeView.render(Model.state.recipe);
   } catch (err) {
-    alert(err);
+    recipeView.renderErr();
   }
 };
 

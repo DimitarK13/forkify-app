@@ -586,7 +586,6 @@ const recipeContainer = document.querySelector(".recipe");
 const controlRecipes = async ()=>{
     try {
         const id = window.location.hash.slice(1);
-        console.log(id);
         if (!id) return;
         (0, _recipeViewJsDefault.default).renderSpinner(recipeContainer);
         // Loading recipe
@@ -594,7 +593,7 @@ const controlRecipes = async ()=>{
         // Rendering Recipe
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
     } catch (err) {
-        alert(err);
+        (0, _recipeViewJsDefault.default).renderErr();
     }
 };
 const init = ()=>{
@@ -2527,7 +2526,8 @@ const loadRecipe = async (id)=>{
         };
         console.log(state.recipe);
     } catch (err) {
-        alert(err);
+        console.error(err);
+        throw err;
     }
 };
 
@@ -2604,6 +2604,8 @@ var _fractional = require("fractional");
 class recipeView {
     #parentEl = document.querySelector(".recipe");
     #data;
+    #errMessage = "We could not find the recipe. Please try another one.";
+    #message = "";
     render(data) {
         this.#data = data;
         const markup = this.#generateMarkup();
@@ -2619,6 +2621,34 @@ class recipeView {
         <svg>
           <use href="${(0, _iconsSvgDefault.default)}#icon-loader"></use>
         </svg>
+      </div>
+    `;
+        this.#clear();
+        this.#parentEl.insertAdjacentHTML("afterbegin", html);
+    }
+    renderErr(message = this.#errMessage) {
+        const html = `
+      <div class="error">
+        <div>
+          <svg>
+            <use href="${(0, _iconsSvgDefault.default)}#icon-alert-triangle"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
+      </div>
+    `;
+        this.#clear();
+        this.#parentEl.insertAdjacentHTML("afterbegin", html);
+    }
+    renderMessage(message = this.#message) {
+        const html = `
+      <div class="message">
+        <div>
+          <svg>
+            <use href="${(0, _iconsSvgDefault.default)}#icon-smile"></use>
+          </svg>
+        </div>
+        <p>${message}</p>
       </div>
     `;
         this.#clear();
