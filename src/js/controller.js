@@ -6,6 +6,8 @@ import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
 import paginationView from './views/paginationView.js';
 import bookmarkView from './views/bookmarkView.js';
+import addRecipeView from './views/addRecipeView.js';
+import { CLOSE_MODAL_SEC } from './config.js';
 
 // if (module.hot) {
 //   module.hot.accept();
@@ -73,6 +75,28 @@ const controlBookmarks = () => {
   bookmarkView.render(Model.state.bookmarks);
 };
 
+const controlAddRecipe = async newRecipe => {
+  try {
+    addRecipeView.renderSpinner();
+
+    await Model.addNewRecipe(newRecipe);
+
+    recipeView.render(Model.state.recipe);
+
+    addRecipeView.renderMessage();
+
+    bookmarkView.render(Model.state.bookmarks);
+
+    window.history.pushState(null, '', `#${Model.state.recipe.id}`);
+
+    setTimeout(() => {
+      addRecipeView.toggleWindow();
+    }, CLOSE_MODAL_SEC * 1000);
+  } catch (err) {
+    addRecipeView.renderErr(err.message);
+  }
+};
+
 const init = () => {
   bookmarkView.addHandlerBookmarks(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -80,5 +104,6 @@ const init = () => {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView.addHandlerSubmit(controlAddRecipe);
 };
 init();
