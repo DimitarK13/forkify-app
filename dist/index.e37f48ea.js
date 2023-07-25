@@ -632,7 +632,11 @@ const controlAddBookmark = ()=>{
     (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
     (0, _bookmarkViewJsDefault.default).render(_modelJs.state.bookmarks);
 };
+const controlBookmarks = ()=>{
+    (0, _bookmarkViewJsDefault.default).render(_modelJs.state.bookmarks);
+};
 const init = ()=>{
+    (0, _bookmarkViewJsDefault.default).addHandlerBookmarks(controlBookmarks);
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
     (0, _recipeViewJsDefault.default).addHandlerUpdateServings(controlServings);
     (0, _recipeViewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
@@ -2613,15 +2617,25 @@ const updateServings = (newServings)=>{
     });
     state.recipe.servings = newServings;
 };
+const persistBookmarks = (el)=>{
+    localStorage.setItem("bookmarks", JSON.stringify(el));
+};
 const addBookmark = (recipe)=>{
     state.bookmarks.push(recipe);
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
+    persistBookmarks(state.bookmarks);
 };
 const deleteBookmark = (id)=>{
     const index = state.bookmarks.findIndex((el)=>el.id === id);
     state.bookmarks.splice(index, 1);
     if (id === state.recipe.id) state.recipe.bookmarked = false;
+    persistBookmarks(state.bookmarks);
 };
+const init = ()=>{
+    const storage = localStorage.getItem("bookmarks");
+    if (storage) state.bookmarks = JSON.parse(storage);
+};
+init();
 
 },{"./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"k5Hzs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -3310,6 +3324,9 @@ class bookmarkView extends (0, _viewDefault.default) {
     _parentEl = document.querySelector(".bookmarks");
     _errMessage = "No bookmarks yet. Find a nice recipe and bookmark it";
     _message = "";
+    addHandlerBookmarks(handler) {
+        window.addEventListener("load", handler);
+    }
     _generateMarkup() {
         return this._data.map((bookmark)=>(0, _previewViewDefault.default).render(bookmark, false)).join();
     }
