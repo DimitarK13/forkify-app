@@ -1,4 +1,4 @@
-import icons from '../../img/icons.svg';
+import icons from '../../img/icons';
 import View from './View';
 
 class recipeView extends View {
